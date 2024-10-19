@@ -1,5 +1,6 @@
 import os
 import argparse
+import csv
 
 import torch
 from torch import nn
@@ -22,7 +23,7 @@ def get_args():
     parser.add_argument('--dataset_name', default='MNIST')
     parser.add_argument('--model_name', default='mlp')
     parser.add_argument('--opti_name', default='sgd')
-    parser.add_argument('--epoch', default=50, type=int)
+    parser.add_argument('--epoch', default=20, type=int)
     parser.add_argument('--out_dir', default='output')
     return parser.parse_args()
 
@@ -148,6 +149,10 @@ train_acc_list = []
 train_loss_list = []
 val_acc_list = []
 val_loss_list = []
+prefix = f"{args.dataset_name}.{args.model_name}.{args.opti_name}.{args.epoch}"
+fo = open(os.path.join(args.out_dir, prefix + ".csv"), 'w')
+writer = csv.writer(fo)
+writer.writerow(['epoch', 'train-acc', 'val-acc', 'train-loss', 'val-loss'])
 for t in range(args.epoch):
     print(f"Epoch {t+1}\n-------------------------------")
     train_acc, train_loss = train(train_dataloader, model, loss_fn, optimizer)
@@ -156,13 +161,15 @@ for t in range(args.epoch):
     train_loss_list.append(train_loss)
     val_acc_list.append(val_acc)
     val_loss_list.append(val_loss)
+    writer.writerow([t, train_acc, val_acc, train_loss, val_loss])
+fo.close()
 print("Done!")
-print(train_acc_list)
-print(train_loss_list)
-print(val_acc_list)
-print(val_loss_list)
+print("train_acc    :", train_acc_list)
+print("train_loss   :", train_loss_list)
+print("val_acc      :", val_acc_list)
+print("val_loss     :", val_loss_list)
 
-prefix = args.dataset_name + '.' + args.model_name + '.' + args.opti_name + '.'
+
 plot_accuracy(train_acc_list, val_acc_list, os.path.join(args.out_dir, prefix + 'acc.png'))
 plot_loss(train_loss_list, val_loss_list, os.path.join(args.out_dir, prefix + 'loss.png'))
 
