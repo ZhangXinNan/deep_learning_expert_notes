@@ -8,38 +8,61 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 from mlp import NeuralNetwork
 from LeNet5 import Net
+import sys
+__dir__ = os.path.abspath(os.path.dirname(__file__))
+__root__ = os.path.abspath(os.path.join(__dir__, '..'))
+print(__dir__)
+print(__root__)
+sys.path.append(__root__)
+from utility.plot_curve import plot_accuracy, plot_loss
 
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset_name', default='mnist')
+    parser.add_argument('--dataset_name', default='MNIST')
     parser.add_argument('--model_name', default='mlp')
     parser.add_argument('--opti_name', default='sgd')
-    parser.add_argument('--epoch', default=10, type=int)
+    parser.add_argument('--epoch', default=50, type=int)
+    parser.add_argument('--out_dir', default='output')
     return parser.parse_args()
 
 
-print(get_args())
+args = get_args()
+print(args)
+if not os.path.isdir(args.out_dir):
+    os.makedirs(args.out_dir)
 
 
-# Download training data from open datasets.
-training_data = datasets.FashionMNIST(
-# training_data = datasets.MNIST(
-    root="data",
-    train=True,
-    download=True,
-    transform=ToTensor(),
-)
-
-# Download test data from open datasets.
-test_data = datasets.FashionMNIST(
-# test_data = datasets.MNIST(
-    root="data",
-    train=False,
-    download=True,
-    transform=ToTensor(),
-)
-
+if args.dataset_name == 'MNIST':
+    # Download training data from open datasets.
+    training_data = datasets.MNIST(
+        root="data",
+        train=True,
+        download=True,
+        transform=ToTensor(),
+    )
+    test_data = datasets.MNIST(
+        root="data",
+        train=False,
+        download=True,
+        transform=ToTensor(),
+    )
+elif args.dataset_name == 'FashionMNIST':
+    # Download training data from open datasets.
+    training_data = datasets.FashionMNIST(
+        root="data",
+        train=True,
+        download=True,
+        transform=ToTensor(),
+    )
+    test_data = datasets.FashionMNIST(
+        root="data",
+        train=False,
+        download=True,
+        transform=ToTensor(),
+    )
+else:
+    exit()
 
 batch_size = 64
 
@@ -63,13 +86,17 @@ device = (
 )
 print(f"Using {device} device")
 
-model = NeuralNetwork().to(device)
-# model = Net().to(device)
+if args.model_name == 'mlp':
+    model = NeuralNetwork().to(device)
+else:
+    model = Net().to(device)
 print(model)
 
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
-# optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+if args.opti_name == 'sgd':
+    optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
+else:
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 
 def train(dataloader, model, loss_fn, optimizer):
@@ -117,12 +144,11 @@ def test(dataloader, model, loss_fn):
     return correct, test_loss
 
 
-epochs = 10
 train_acc_list = []
 train_loss_list = []
 val_acc_list = []
 val_loss_list = []
-for t in range(epochs):
+for t in range(args.epoch):
     print(f"Epoch {t+1}\n-------------------------------")
     train_acc, train_loss = train(train_dataloader, model, loss_fn, optimizer)
     val_acc, val_loss = test(test_dataloader, model, loss_fn)
@@ -136,26 +162,9 @@ print(train_loss_list)
 print(val_acc_list)
 print(val_loss_list)
 
-
-import matplotlib
-import matplotlib.pyplot as plt
-plt.plot(train_acc_list)
-plt.plot(val_acc_list)
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-plt.legend(['acc-train','acc-val'], loc='upper left')
-plt.savefig('acc.png')
-plt.clf()
-
-plt.plot(train_loss_list)
-plt.plot(val_loss_list)
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['loss-train','loss-val'], loc='upper left')
-plt.savefig('loss.png')
-plt.clf()
+prefix = args.dataset_name + '.' + args.model_name + '.' + args.opti_name + '.'
+plot_accuracy(train_acc_list, val_acc_list, os.path.join(args.out_dir, prefix + 'acc.png'))
+plot_loss(train_loss_list, val_loss_list, os.path.join(args.out_dir, prefix + 'loss.png'))
 
 
 
