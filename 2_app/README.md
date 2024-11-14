@@ -1,0 +1,88 @@
+
+- 第1篇 目标检测与分割
+  - 第1章 双阶段检测
+    - 1.1 R-CNN
+    - 1.2 SPP-Net
+    - 1.3 Fast R-CNN
+    - 1.4 Faster R-CNN
+    - 1.5 R-FCN
+    - 1.6 Mask R-CNN
+    - 1.7 Mask2 R-CNN
+    - 1.8 DCNv1和DCNv2
+  - 第2章 单阶段检测
+    - 2.1 YOLOv1
+    - 2.2 SSD和DSSD
+    - 2.3 YOLOv2
+    - 2.4 YOLOv3
+    - 2.5 YOLOv4
+  - 第3章 无锚点检测
+    - 3.1 DenseBox
+    - 3.2 CornerNet
+    - 3.3 CornerNet-Lite
+    - 3.4 CenterNet
+    - 3.5 FCOS
+    - 3.6 DETR
+  - 第4章 特征融合
+    - 4.1 FPN
+    - 4.2 PANet
+    - 4.3 NAS-FPN
+    - 4.4 EfficientDet
+  - 第5章 损失函数
+    - 5.1 Focal Loss
+    - 5.2 IoU损失
+    - 5.3 GIoU损失
+    - 5.4 DIoU损失和CIoU损失
+    - 5.5 Focal-EIoU损失
+  - 第6章 语义分割
+    - 6.1 FCN和SegNet
+    - 6.2 U-Net
+    - 6.3 V-Net
+    - 6.4 DeepLab系列
+- 第2篇 场景文字检测与识别
+  - 第7章 场景文字检测
+    - 7.1 DeepText
+    - 7.2 CTPN
+    - 7.3 RRPN
+    - 7.4 HED
+    - 7.5 HMCP
+    - 7.6 EAST
+    - 7.7 PixelLink
+  - 第8章 场景文字识别
+    - 8.1 STN
+    - 8.2 RARE
+    - 8.3 Bi-STET
+    - 8.4 CTC
+- 第3篇 其他算法与应用
+  - 第9章 图像翻译
+    - 9.1 GAN
+    - 9.2 Pix2Pix
+    - 9.3 Pix2PixHD
+    - 9.4 图像风格迁移
+  - 第10章 图神经网络
+    - 10.1 GraphSAGE
+    - 10.2 GAT
+    - 10.3 HAN
+  - 第11章 二维结构识别
+    - 11.1 Show and Tell
+    - 11.2 Show Attend and Tell
+    - 11.3 数学公式识别
+  - 第12章 人像抠图
+    - 12.1 background Matting
+    - 12.2 Background Matting v2
+  - 第13章 图像预训练
+    - 13.1 MAE
+    - 13.2 BEiT v1
+    - 13.3 BeiT v2
+  - 第14章 多模态预训练
+    - 14.1 ViLBERT
+    - 14.2 CLIP
+    - 14.3 DALL-E
+    - 14.4 VLMo
+    - 14.5 BEiT v3
+- 附录
+  - 附录A 双线性插值
+  - 附录B 匈牙利算法
+  - 附录C Shift-and-Stitch
+  - 附录D 德劳内三角化
+  - 附录E 图像梯度
+  - 附录F 仿射变换矩阵
